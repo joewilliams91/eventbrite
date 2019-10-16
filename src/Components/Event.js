@@ -1,7 +1,17 @@
 import React from "react";
 
 export default function Event({ event }) {
-  const getDate = date => {
+  const getDateString = date => {
+       const dayObj = {
+      0: "Sunday",
+      1: "Monday",
+      2: "Tuesday",
+      3: "Wednesday",
+      4: "Thursday",
+      5: "Friday",
+      6: "Saturday"
+    };
+
     const monthObj = {
       Jan: "January",
       Feb: "February",
@@ -17,7 +27,7 @@ export default function Event({ event }) {
       Dec: "December"
     };
 
-    const getDay = day => {
+    const getDateEnding = day => {
       const dayObj = {
         0: "th",
         1: "st",
@@ -34,45 +44,44 @@ export default function Event({ event }) {
       return day + dayObj[day.slice(1)];
     };
 
-    const getTime = time => {
-        let newTime = time.slice(0, 5)
+    const getTimeFormat = time => {
+      let newTime = time.slice(0, 5);
 
-         if(/00$/.test(newTime)){
-            newTime = newTime.slice(0, 2)
-        }
+      if (/00$/.test(newTime)) {
+        newTime = newTime.slice(0, 2);
+      }
 
-        newTime = newTime.replace(/:/g, ".")
-        newTime = newTime.replace(/^0/g, "")
+      newTime = newTime.replace(/:/g, ".");
+      newTime = newTime.replace(/^0/g, "");
 
-        if(+newTime.slice(0, 2) <= 12){
-            newTime = newTime + "am"
-        } else {
-            newTime = newTime.replace(/\d+/g, x => +x - 12)
-            newTime = newTime + "pm"
-        }
-       
-        return " at " + newTime;
-    }
+      if (+newTime.slice(0, 2) <= 12) {
+        newTime = newTime + "am";
+      } else {
+        newTime = newTime.replace(/\d+/g, x => +x - 12);
+        newTime = newTime + "pm";
+      }
+
+      return " at " + newTime;
+    };
 
     let newDate = new Date(date).toString().slice(0, -31);
-    newDate = newDate.replace(/(\d{2})(?= \d{4})/g, x => getDay(x));
-    newDate = newDate.replace(/^(\w+) /g, `$1day, `);
+    newDate = newDate.replace(/(\d{2})(?= \d{4})/g, x => getDateEnding(x));
+    newDate = newDate.replace(
+      /^(\w+) /g,
+      x => dayObj[new Date(date).getDay()] + ", "
+    );
     newDate = newDate.replace(
       /(\w+)(?= \d{2}\w{2} \d{4})/g,
       x => monthObj[x] + " the "
-    
     );
-    newDate = newDate.replace(/\d+:\d+:\d+/g, x => getTime(x))
-
+    newDate = newDate.replace(/\d+:\d+:\d+/g, x => getTimeFormat(x));
     return newDate;
   };
 
   return (
     <div>
-      <h2>
-        {event.name.text}
-      </h2>
-      <h3>{getDate(event.start.local)}</h3>
+      <h2>{event.name.text}</h2>
+      <h3>{getDateString(event.start.local)}</h3>
     </div>
   );
 }
