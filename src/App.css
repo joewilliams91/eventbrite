@@ -1,22 +1,97 @@
-.App {
-  text-align: center;
-}
+@import url("https://rsms.me/inter/inter.css");
 
-.App-logo {
-  height: 40vmin;
+.container{
+  background-color:rgb(243, 240, 240);
+  font-family: "inter";
 }
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.calendar{
+  display: flex;
+  justify-content: center;
+}
+.button-container{
+  display: flex;
+  justify-content: center;
+  margin: 1%;
+}
+.title-container{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  background-color: white;
+  border-bottom: black solid 2px;
+}
+.page-title{
+  color: rgb(248, 80, 19);;
+  margin-bottom: 0.8%;
+}
+.date-range-container{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.events-container{
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+.event-box{
+  background-color: white;
+  padding: 0.5%;
+  border-radius: 3px;
+  border: solid black 1px;
+  width: 70%;
+  margin: 1%;
+  display: flex;
+  flex-direction: column;
+}
+.event-title{
+  color: rgb(248, 80, 19);
+  margin-bottom: 1.9%;
+}
+.event-box-header{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-bottom: solid black 1.5px;
+}
+.event-box-header-button-container{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  width: 24%;
+}
+.event-box-header-button{
+  height: 2rem;
+  background-color: white;
+  border: none;
+  width: 61%;
+  padding-left: 0;
+ }
+ .event-box-header-button:focus {
+  outline: none;
+}
+.event-box-header-button-text{
+  width: 57%;
+  margin-bottom: 0.8%;
+  background-color: white;
+}
+.event-box-header-title{
+  width: 65%;
+}
+.modal-page{
+  display: flex;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: center;
+  flex-direction: column;
 }
 
-.App-link {
-  color: #09d3ac;
+.modal-close{
+  display: flex;
+  justify-content: flex-end;
+}
+
+.eventbrite-image{
+  height: 146%;
+  width: 117%;
 }

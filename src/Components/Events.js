@@ -42,45 +42,71 @@ export default class Events extends Component {
 
     const params = {
       start_date,
-      end_date
+      end_date,
+      page: 1
     };
 
     this.setState({ params });
   };
 
+  nextPage = () => {
+    this.setState(currentState => {
+      const newPage = currentState.params.page + 1;
+      const newParams = { ...currentState.params, page: newPage };
+      return { ...currentState, params: newParams };
+    });
+  };
+
   componentDidUpdate = (prevProps, prevState) => {
     if (
-      prevState.params.start_date !== this.state.params.start_date &&
-      prevState.params.end_date !== this.state.params.end_date
+      (prevState.params.start_date !== this.state.params.start_date &&
+        prevState.params.end_date !== this.state.params.end_date) ||
+      prevState.params.page !== this.state.params.page
     ) {
       const { params } = this.state;
       api.getEvents(params).then(({ events, pagination, location }) => {
-        this.setState({ events, pagination, location });
+        this.setState({ events, pagination, location }, () => {
+          window.scrollTo(0, 0);
+        });
       });
     }
   };
 
   render() {
-    const { events } = this.state;
+    const { events, pagination } = this.state;
     return (
       <div>
-        <div>
-          <h1>Events in Manchester</h1>
+        <div className="title-container">
+          <h1 className="page-title">Events in Manchester</h1>
+          </div>
+          <div className="date-range-container">
+          <h2>Please select a date range:</h2>
         </div>
-        <div>
+        <div className="calendar">
           <DateRange
             onInit={this.handleSelect}
             onChange={this.handleSelect}
             format="YYYY/MM/DD"
           />
         </div>
-        <button onClick={this.searchEvents}>Search</button>
-        <div>
+        <div className="button-container">
+          <button className="button" onClick={this.searchEvents}>
+            Search
+          </button>
+        </div>
+        <div className="events-container">
           {events &&
             events.map(event => {
               return <Event key={event.id} event={event} />;
             })}
         </div>
+        {events && pagination.has_more_items && (
+          <div className="button-container">
+            <button className="button" onClick={this.nextPage}>
+              Next page
+            </button>
+          </div>
+        )}
       </div>
     );
   }

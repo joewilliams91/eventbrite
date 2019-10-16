@@ -1,8 +1,29 @@
-import React from "react";
+import React, { Component } from "react";
+import Modal from "react-modal";
 
-export default function Event({ event }) {
-  const getDateString = date => {
-       const dayObj = {
+
+export default class Event extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      modalIsOpen: false
+    };
+
+    this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+  }
+
+  openModal() {
+    this.setState({ modalIsOpen: true });
+  }
+
+  closeModal() {
+    this.setState({ modalIsOpen: false });
+  }
+
+  getDateString = date => {
+    const dayObj = {
       0: "Sunday",
       1: "Monday",
       2: "Tuesday",
@@ -78,10 +99,65 @@ export default function Event({ event }) {
     return newDate;
   };
 
-  return (
-    <div>
-      <h2>{event.name.text}</h2>
-      <h3>{getDateString(event.start.local)}</h3>
-    </div>
-  );
+  handleClick = url => {
+    window.open(url, "_blank");
+  };
+
+  toggleVisibility = () => {
+    this.setState(currentState => {
+      const newVisibility = !currentState.visibility;
+      return { ...currentState, visibility: newVisibility };
+    });
+  };
+
+  render() {
+    const { event } = this.props;
+    return (
+      <div className="event-box">
+        <div className="event-box-header">
+          <div
+            className="event-box-header-title"
+            onClick={() => {
+              this.openModal();
+            }}
+          >
+            <h2 className="event-title">{event.name.text}</h2>
+          </div>
+
+          <div className="event-box-header-button-container">
+            <p className="event-box-header-button-text">View event @</p>
+            <button            
+              className="event-box-header-button"
+              onClick={() => {
+                this.handleClick(event.url);
+              }}
+            >
+              <img className="eventbrite-image" src={'/Eventbrite.png'} alt="logo"/>
+            </button>
+          </div>
+        </div>
+        <div
+          onClick={() => {
+            this.openModal();
+          }}
+        >
+          
+          <h3>{this.getDateString(event.start.local)}</h3>
+        </div>
+        <Modal
+          isOpen={this.state.modalIsOpen}
+          onRequestClose={this.closeModal}
+          contentLabel="Event Modal"
+        >
+          <div className="modal-close">
+            <button onClick={this.closeModal}>Close</button>
+          </div>
+          <div
+            className="modal-page"
+            dangerouslySetInnerHTML={{ __html: event.description.html }}
+          />
+        </Modal>
+      </div>
+    );
+  }
 }
