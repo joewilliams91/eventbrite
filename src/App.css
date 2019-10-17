@@ -46,29 +46,31 @@
 }
 .event-title{
   color: rgb(248, 80, 19);
-  margin-bottom: 1.9%;
-  margin-top: 0;
+  margin: 0;
   background-color: white;
   width: 100%;
-  min-height: 9.18rem;
-  max-height: 20rem;
   display: flex;
   
 }
 .event-box-header{
+  background-color: white;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-start;
   border-bottom: solid black 1.5px;
   font-size: 1.73rem;
-  min-height: 9.6rem;
-  max-height: 20rem;
+  min-height: 8.3rem;
+  max-height: 45rem;
+  margin-bottom: 0.6rem;
+  padding-bottom: 0.1rem;
 }
 .event-box-header-title{
   background-color: white;
-  min-height: 9.46rem;
-  max-height: 20rem;
+  min-height: 8.4rem;
+  max-height: 45rem;
+  padding-bottom: 0.2rem;
+  width: 73%;
 }
 .event-box-footer-button-container{
   display: flex;
@@ -92,9 +94,7 @@
   padding-left: 0.4rem;
   background-color: white;
 }
-.event-box-header-title{
-  width: 73%;
-}
+
 .event-box-footer{
   display: flex;
   flex-direction: row;
