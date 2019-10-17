@@ -3,6 +3,7 @@ import * as api from "./api";
 import Event from "./Event";
 import { DateRange } from "react-date-range";
 
+
 export default class Events extends Component {
   state = {
     events: [],
@@ -57,6 +58,14 @@ export default class Events extends Component {
     });
   };
 
+  prevPage = () => {
+    this.setState(currentState => {
+      const newPage = currentState.params.page - 1;
+      const newParams = { ...currentState.params, page: newPage };
+      return { ...currentState, params: newParams };
+    });
+  };
+
   componentDidUpdate = (prevProps, prevState) => {
     if (
       (prevState.params.start_date !== this.state.params.start_date &&
@@ -78,8 +87,8 @@ export default class Events extends Component {
       <div>
         <div className="title-container">
           <h1 className="page-title">Events in Manchester</h1>
-          </div>
-          <div className="date-range-container">
+        </div>
+        <div className="date-range-container">
           <h2>Please select a date range:</h2>
         </div>
         <div className="calendar">
@@ -90,8 +99,8 @@ export default class Events extends Component {
           />
         </div>
         <div className="button-container">
-          <button className="button" onClick={this.searchEvents}>
-            Search
+          <button className="search-button" style={{cursor:'pointer'}} onClick={this.searchEvents}>
+          <img className="" src={'/arrow.png'} alt="arrow"/>
           </button>
         </div>
         <div className="events-container">
@@ -100,13 +109,26 @@ export default class Events extends Component {
               return <Event key={event.id} event={event} />;
             })}
         </div>
-        {events && pagination.has_more_items && (
-          <div className="button-container">
-            <button className="button" onClick={this.nextPage}>
-              Next page
-            </button>
-          </div>
-        )}
+        <div className="nav-section">
+          {events.length > 0 && (
+            <div className="button-container">
+              <button
+                className={pagination.page_number > 1 ? "nav-buttons" : "hidden-nav-buttons"}
+                style={{cursor:'pointer'}}
+                onClick={pagination.page_number > 1 ? this.prevPage : undefined}
+              >
+                Previous
+              </button>
+              <button
+                className={pagination.has_more_items ? "nav-buttons" : "hidden-nav-buttons"}
+                style={{cursor:'pointer'}}
+                onClick={pagination.has_more_items ? this.nextPage : undefined}
+              >
+                Next
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     );
   }

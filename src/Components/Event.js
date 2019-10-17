@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import Modal from "react-modal";
 
-
 export default class Event extends Component {
   constructor() {
     super();
@@ -12,6 +11,8 @@ export default class Event extends Component {
 
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.imageClick = this.imageClick.bind(this);
   }
 
   openModal() {
@@ -103,6 +104,12 @@ export default class Event extends Component {
     window.open(url, "_blank");
   };
 
+  imageClick = url => {
+    // e.stopPropagation();
+    // console.log(e);
+    window.open(url, "_blank");
+  };
+
   toggleVisibility = () => {
     this.setState(currentState => {
       const newVisibility = !currentState.visibility;
@@ -117,32 +124,59 @@ export default class Event extends Component {
         <div className="event-box-header">
           <div
             className="event-box-header-title"
+            style={{ cursor: "pointer" }}
             onClick={() => {
               this.openModal();
             }}
           >
             <h2 className="event-title">{event.name.text}</h2>
           </div>
-
-          <div className="event-box-header-button-container">
-            <p className="event-box-header-button-text">View event @</p>
-            <button            
-              className="event-box-header-button"
-              onClick={() => {
-                this.handleClick(event.url);
-              }}
-            >
-              <img className="eventbrite-image" src={'/Eventbrite.png'} alt="logo"/>
-            </button>
+          <div>
+            {event.logo && (
+              <img
+                src={event.logo.original.url}
+                alt="logo"
+                className="logo-image"
+                style={{ cursor: "pointer" }}
+                onClick={() => {
+                  this.imageClick(event.logo.original.url);
+                }}
+              />
+            )}
           </div>
         </div>
-        <div
-          onClick={() => {
-            this.openModal();
-          }}
-        >
-          
-          <h3>{this.getDateString(event.start.local)}</h3>
+        <div className="event-box-footer">
+          <div
+            className="event-box-footer-date"
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              this.openModal();
+            }}
+          >
+            <h3 style={{ marginBottom: "0.3%" }}>
+              {this.getDateString(event.start.local)}
+            </h3>
+          </div>
+
+          <div
+            className="event-box-footer-button-container"
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              this.handleClick(event.url);
+            }}
+          >
+            <p className="event-box-footer-button-text">View @</p>
+            <button
+              style={{ cursor: "pointer" }}
+              className="event-box-footer-button"
+            >
+              <img
+                className="eventbrite-image"
+                src={"/Eventbrite.png"}
+                alt="logo"
+              />
+            </button>
+          </div>
         </div>
         <Modal
           isOpen={this.state.modalIsOpen}
